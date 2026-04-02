@@ -1,7 +1,6 @@
 package com.fortify.plugin.burp;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BurpItem {
@@ -18,39 +17,99 @@ public class BurpItem {
     private String issueDetail;
     private String remediationDetail;
 
-    public String getSerialNumber() { return serialNumber; }
-    public void setSerialNumber(String serialNumber) { this.serialNumber = serialNumber; }
+    public String getSerialNumber() {
+        return serialNumber;
+    }
 
-    public String getType() { return type; }
-    public void setType(String type) { this.type = type; }
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public String getType() {
+        return type;
+    }
 
-    public String getHost() { return host; }
-    public void setHost(String host) { this.host = host; }
+    public void setType(String type) {
+        this.type = type;
+    }
 
-    public String getPath() { return path; }
-    public void setPath(String path) { this.path = path; }
+    public String getName() {
+        return name;
+    }
 
-    public String getLocation() { return location; }
-    public void setLocation(String location) { this.location = location; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public String getSeverity() { return severity; }
-    public void setSeverity(String severity) { this.severity = severity; }
+    public String getHost() {
+        return host;
+    }
 
-    public String getConfidence() { return confidence; }
-    public void setConfidence(String confidence) { this.confidence = confidence; }
+    public void setHost(String host) {
+        this.host = host;
+    }
 
-    public String getIssueBackground() { return issueBackground; }
-    public void setIssueBackground(String issueBackground) { this.issueBackground = issueBackground; }
+    public String getPath() {
+        return path;
+    }
 
-    public String getRemediationBackground() { return remediationBackground; }
-    public void setRemediationBackground(String remediationBackground) { this.remediationBackground = remediationBackground; }
+    public void setPath(String path) {
+        this.path = path;
+    }
 
-    public String getIssueDetail() { return issueDetail; }
-    public void setIssueDetail(String issueDetail) { this.issueDetail = issueDetail; }
+    public String getLocation() {
+        return location;
+    }
 
-    public String getRemediationDetail() { return remediationDetail; }
-    public void setRemediationDetail(String remediationDetail) { this.remediationDetail = remediationDetail; }
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getSeverity() {
+        return severity;
+    }
+
+    public void setSeverity(String severity) {
+        this.severity = severity;
+    }
+
+    public String getConfidence() {
+        return confidence;
+    }
+
+    public void setConfidence(String confidence) {
+        this.confidence = confidence;
+    }
+
+    public String getIssueBackground() {
+        return issueBackground;
+    }
+
+    public void setIssueBackground(String issueBackground) {
+        this.issueBackground = issueBackground;
+    }
+
+    public String getRemediationBackground() {
+        return remediationBackground;
+    }
+
+    public void setRemediationBackground(String remediationBackground) {
+        this.remediationBackground = remediationBackground;
+    }
+
+    public String getIssueDetail() {
+        return issueDetail;
+    }
+
+    public void setIssueDetail(String issueDetail) {
+        this.issueDetail = issueDetail;
+    }
+
+    public String getRemediationDetail() {
+        return remediationDetail;
+    }
+
+    public void setRemediationDetail(String remediationDetail) {
+        this.remediationDetail = remediationDetail;
+    }
 }

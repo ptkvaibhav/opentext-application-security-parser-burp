@@ -38,7 +38,8 @@ public class BurpParserPlugin implements ParserPlugin<BurpVulnerabilityAttribute
     }
 
     @Override
-    public void parseVulnerabilities(ScanData scanData, VulnerabilityHandler vulnerabilityHandler) throws ScanParsingException, IOException {
+    public void parseVulnerabilities(ScanData scanData, VulnerabilityHandler vulnerabilityHandler)
+            throws ScanParsingException, IOException {
         try (InputStream is = scanData.getInputStream(name -> name.endsWith(".xml"))) {
             if (is != null) {
                 BurpItems burpItems = xmlMapper.readValue(is, BurpItems.class);
@@ -66,7 +67,8 @@ public class BurpParserPlugin implements ParserPlugin<BurpVulnerabilityAttribute
         builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.ISSUE_DETAIL, item.getIssueDetail());
         builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.ISSUE_BACKGROUND, item.getIssueBackground());
         builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.REMEDIATION_DETAIL, item.getRemediationDetail());
-        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.REMEDIATION_BACKGROUND, item.getRemediationBackground());
+        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.REMEDIATION_BACKGROUND,
+                item.getRemediationBackground());
         
         builder.completeVulnerability();
     }
@@ -83,13 +85,18 @@ public class BurpParserPlugin implements ParserPlugin<BurpVulnerabilityAttribute
     }
 
     private BasicVulnerabilityBuilder.Priority mapPriority(String severity) {
-        if (severity == null) return BasicVulnerabilityBuilder.Priority.Low;
+        if (severity == null) {
+            return BasicVulnerabilityBuilder.Priority.Low;
+        }
         switch (severity.toLowerCase()) {
-            case "high": return BasicVulnerabilityBuilder.Priority.High;
-            case "medium": return BasicVulnerabilityBuilder.Priority.Medium;
-            case "low": return BasicVulnerabilityBuilder.Priority.Low;
-            case "information": return BasicVulnerabilityBuilder.Priority.Low;
-            default: return BasicVulnerabilityBuilder.Priority.Low;
+            case "high":
+                return BasicVulnerabilityBuilder.Priority.High;
+            case "medium":
+                return BasicVulnerabilityBuilder.Priority.Medium;
+            case "low":
+            case "information":
+            default:
+                return BasicVulnerabilityBuilder.Priority.Low;
         }
     }
 }
