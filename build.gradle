@@ -1,0 +1,38 @@
+plugins {
+    id 'java-library'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+}
+
+group = 'com.fortify.plugin'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly 'com.fortify.plugin:plugin-api:1.2.2320.0'
+    
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.15.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+    
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
+    testImplementation 'org.mockito:mockito-core:5.3.1'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.3.1'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}
+
+shadowJar {
+    archiveClassifier.set('')
+    // Fortify SSC requires all dependencies to be flattened into the JAR
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
