@@ -20,12 +20,27 @@ public class BurpItems {
     @JacksonXmlProperty(localName = "item")
     private List<BurpItem> items;
 
-    public String getBurpVersion() { return burpVersion; }
-    public void setBurpVersion(String burpVersion) { this.burpVersion = burpVersion; }
+    public String getBurpVersion() {
+        return burpVersion;
+    }
 
-    public String getExportTime() { return exportTime; }
-    public void setExportTime(String exportTime) { this.exportTime = exportTime; }
+    public void setBurpVersion(String burpVersion) {
+        this.burpVersion = burpVersion;
+    }
 
-    public List<BurpItem> getItems() { return items; }
-    public void setItems(List<BurpItem> items) { this.items = items; }
+    public String getExportTime() {
+        return exportTime;
+    }
+
+    public void setExportTime(String exportTime) {
+        this.exportTime = exportTime;
+    }
+
+    public List<BurpItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<BurpItem> items) {
+        this.items = items;
+    }
 }

@@ -1,0 +1,14 @@
+.gradle
+build/
+bin/
+*.jar
+*.class
+*.zip
+.settings/
+.project
+.classpath
+.factorypath
+config/checkstyle/google_checks.xml
+gradle-8.7/
+gradle-8.7-bin.zip
+InspectPluginApi.java
