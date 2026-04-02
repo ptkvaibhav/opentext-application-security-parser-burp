@@ -2,7 +2,7 @@
 
 ![Build Status](https://github.com/ptkvaibhav/opentext-application-security-parser-burp/actions/workflows/ci.yml/badge.svg)
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
-![Java](https://img.shields.io/badge/Java-21+-orange)
+![Java](https://img.shields.io/badge/Java-17-orange)
 ![Fortify](https://img.shields.io/badge/Fortify_SSC-19.x+-brightgreen)
 
 An enterprise-grade custom parser plugin for Fortify Software Security Center (OpenText Application Security). This plugin enables seamless ingestion, parsing, and visualization of PortSwigger Burp Suite XML scan results directly within the Fortify SSC dashboard.
@@ -20,9 +20,9 @@ Fortify SSC relies on external plugins to support third-party security tools. Th
 ## 🚀 Getting Started
 
 ### Prerequisites
-- **Java:** JDK 21 or higher.
+- **Java:** JDK 17.
 - **Build Tool:** Gradle 8.x.
-- **Fortify SSC:** Version 19.x or later (tested compatible up to 25.4.0).
+- **Fortify SSC:** Version 19.x or later (fully compatible with 25.4.0).
 - **Burp Suite:** Export capabilities to XML.
 
 ### Building the Plugin
