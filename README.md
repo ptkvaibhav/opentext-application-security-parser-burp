@@ -21,7 +21,7 @@ Fortify SSC relies on external plugins to support third-party security tools. Th
 
 ### Prerequisites
 - **Java:** JDK 17.
-- **Build Tool:** Gradle 8.x.
+- **Build Tool:** Gradle 9.4.1.
 - **Fortify SSC:** Version 19.x or later (fully compatible with 25.4.0).
 - **Burp Suite:** Export capabilities to XML.
 
