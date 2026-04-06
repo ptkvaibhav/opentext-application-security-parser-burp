@@ -1,18 +1,18 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<plugin xmlns="https://fortify.com/schema/pluginmanifest"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="https://fortify.com/schema/pluginmanifest https://fortify.com/schema/pluginmanifest/pluginmanifest-1.1.xsd">
-    
+<?xml version="1.0" encoding="utf-8" ?>
+<plugin xmlns="xmlns://www.fortify.com/schema/pluginmanifest-1.0.xsd"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="PluginDescriptor"
+        id="com.fortify.plugin.burp.BurpParserPlugin" api-version="1.0">
     <plugin-info>
-        <id>com.fortify.plugin.burp.BurpParserPlugin</id>
         <name>Burp Suite Parser Plugin</name>
-        <version>1.0.0</version>
+        <version>1.1.0</version>
         <data-version>1</data-version>
-        <api-version>1.1</api-version>
+        <vendor name="OpenText" url="https://www.microfocus.com/en-us/cyberres/application-security"/>
+        <description>Parser for Burp Suite vulnerability scanner results.</description>
     </plugin-info>
-
-    <issue-parser>
+    <issue-parser xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         <engine-type>BURP</engine-type>
-        <view-template>burp-view.json</view-template>
+        <view-template location="/burp-view.json">
+            <description>Default vulnerability view template for Burp Suite.</description>
+        </view-template>
     </issue-parser>
 </plugin>

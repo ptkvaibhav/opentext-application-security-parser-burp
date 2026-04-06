@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2026-04-06
+### Fixed
+- Fixed `plugin.xml` parsing error in Fortify SSC by conforming strictly to the `pluginmanifest-1.0.xsd` schema and correct XML namespaces.
+
 ## [1.0.0] - 2026-04-06
 ### Added
 - Initial production-ready release of the Burp Suite parser for OpenText Application Security (Fortify SSC).
