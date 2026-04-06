@@ -16,11 +16,11 @@ repositories {
 dependencies {
     compileOnly 'com.fortify.plugin:plugin-api:1.2.2320.0'
     testImplementation 'com.fortify.plugin:plugin-api:1.2.2320.0'
-
+    
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.18.2'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
-
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
+    
+    testImplementation 'org.junit.jupiter:junit-jupiter:6.0.0-M1'
     testImplementation 'org.mockito:mockito-core:5.15.2'
     testImplementation 'org.mockito:mockito-junit-jupiter:5.15.2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -46,7 +46,7 @@ jacocoTestReport {
 }
 
 checkstyle {
-    toolVersion = '10.12.5'
+    toolVersion = '10.21.2'
     configFile = file("${project.rootDir}/config/checkstyle/checkstyle.xml")
     ignoreFailures = false
     maxWarnings = 0
