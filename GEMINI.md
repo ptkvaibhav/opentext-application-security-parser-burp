@@ -19,7 +19,7 @@ The goal is to create a Java-based plugin for Fortify SSC that enables the inges
 
 ## File Structure Conventions
 - `src/main/java`: Plugin implementation.
-- `src/main/resources`: `view-template.json` and other static resources.
+- `src/main/resources`: `viewtemplate/ViewTemplate.json` and other static resources.
 - `src/main/resources/META-INF/services`: SPI registration.
 - `plugin.xml`: Root of the resources or JAR.
 

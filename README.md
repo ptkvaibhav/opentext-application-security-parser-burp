@@ -14,7 +14,9 @@ Fortify SSC relies on external plugins to support third-party security tools. Th
 **Key Features:**
 - **Deterministic ID Generation:** Uses SHA-256 hashing of Issue Name, Host, Path, and Location to ensure vulnerability IDs remain stable across subsequent scans, preventing duplicates.
 - **Rich Attribute Mapping:** Custom attributes ensure that Burp-specific data (e.g., Confidence, Issue Background, Remediation Detail) is fully visible in SSC.
-- **Custom View Template:** Includes a tailored UI template (`burp-view.json`) that organizes issue details cleanly within the SSC interface.
+- **Custom View Template:** Includes a tailored UI template (`viewtemplate/ViewTemplate.json`) that organizes issue details cleanly within the SSC interface.
+- **Burp Reports Support:** Parses both standard `Saved Items` XML and the newer `Burp Reports` (`<issues>`) XML structures.
+- **Fortify UI Integration:** Includes official OpenText Fortify icons and logos for seamless integration.
 - **Enterprise CI/CD:** Fully integrated GitHub Actions workflow for automated testing, linting (Checkstyle), and build packaging.
 
 ## 🚀 Getting Started
@@ -39,14 +41,14 @@ cd opentext-application-security-parser-burp
 ```
 
 The resulting deployment artifact will be located at:
-`build/libs/fortify-ssc-parser-burp-1.1.0.jar`
+`build/libs/fortify-ssc-parser-burp-1.2.0.jar`
 
 ## ⚙️ Installation & Usage
 
 ### 1. Install into Fortify SSC
 1. Log in to your Fortify SSC instance with Administrator privileges.
 2. Navigate to **Administration > Plugins > Parsers**.
-3. Click **Add** and upload the `fortify-ssc-parser-burp-1.1.0.jar` file.
+3. Click **Add** and upload the `fortify-ssc-parser-burp-1.2.0.jar` file.
 4. **Important:** After uploading, locate the "Burp Suite Parser Plugin" in the list and click **Enable**.
 
 ### 2. Uploading Scan Results
