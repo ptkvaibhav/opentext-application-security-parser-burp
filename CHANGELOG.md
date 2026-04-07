@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.2] - 2026-04-07
+### Fixed
+- Fixed `FMDALException` in Fortify SSC caused by unique ID length and format by switching from Base64-encoded SHA-256 to a 32-character MD5 hex string.
+- Fixed `FMDALException` caused by `fileName` exceeding 255 characters by truncating the `fileName` field.
+
 ## [1.2.1] - 2026-04-06
 ### Fixed
 - Fixed critical `ScanParsingException` leading to "No valid analysis result was found" in Fortify SSC. The plugin now properly invokes `scanBuilder.completeScan()` to trigger Fortify's internal processing logic.

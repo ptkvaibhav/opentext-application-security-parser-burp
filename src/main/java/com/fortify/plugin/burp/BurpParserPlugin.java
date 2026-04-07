@@ -14,7 +14,6 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 import java.util.Date;
 
 public class BurpParserPlugin implements ParserPlugin<BurpVulnerabilityAttribute> {
@@ -60,15 +59,23 @@ public class BurpParserPlugin implements ParserPlugin<BurpVulnerabilityAttribute
     private void reportIssue(VulnerabilityHandler vulnerabilityHandler, BurpItem item) {
         StaticVulnerabilityBuilder builder = vulnerabilityHandler.startStaticVulnerability(generateUniqueId(item));
         
-        builder.setCategory(item.getName());
-        builder.setFileName(item.getHost() + item.getPath());
+        builder.setCategory(item.getName() != null ? item.getName() : "Unknown");
+        String host = item.getHost() != null ? item.getHost() : "";
+        String path = item.getPath() != null ? item.getPath() : "";
+        String fileName = host + path;
+        if (fileName.isEmpty()) {
+            fileName = "Unknown";
+        } else if (fileName.length() > 255) {
+            fileName = fileName.substring(0, 255);
+        }
+        builder.setFileName(fileName);
         builder.setPriority(mapPriority(item.getSeverity()));
         
         // Custom attributes
         builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.ISSUE_NAME, item.getName());
         builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.SEVERITY, item.getSeverity());
         builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.CONFIDENCE, item.getConfidence());
-        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.FULL_FILE_NAME, item.getHost() + item.getPath());
+        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.FULL_FILE_NAME, host + path);
         builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.ISSUE_DETAIL, item.getIssueDetail());
         builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.ISSUE_BACKGROUND, item.getIssueBackground());
         builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.REMEDIATION_DETAIL, item.getRemediationDetail());
@@ -80,12 +87,20 @@ public class BurpParserPlugin implements ParserPlugin<BurpVulnerabilityAttribute
 
     private String generateUniqueId(BurpItem item) {
         try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            MessageDigest digest = MessageDigest.getInstance("MD5");
             String combined = item.getName() + "|" + item.getHost() + "|" + item.getPath() + "|" + item.getLocation();
             byte[] hash = digest.digest(combined.getBytes(StandardCharsets.UTF_8));
-            return Base64.getEncoder().encodeToString(hash);
+            StringBuilder hexString = new StringBuilder(2 * hash.length);
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+            return hexString.toString();
         } catch (NoSuchAlgorithmException e) {
-            return item.getSerialNumber();
+            return item.getSerialNumber() != null ? item.getSerialNumber() : "00000000000000000000000000000000";
         }
     }
 
