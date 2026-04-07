@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.1.0] - 2026-04-06
+## [1.2.0] - 2026-04-06
 ### Fixed
 - Fixed `plugin.xml` parsing error in Fortify SSC by conforming strictly to the `pluginmanifest-1.0.xsd` schema and correct XML namespaces.
 - Fixed an issue where `.XML` files with uppercase extensions were rejected by using case-insensitive extension matching.

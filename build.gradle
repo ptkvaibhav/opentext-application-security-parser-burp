@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'com.fortify.plugin'
-version = '1.1.0'
+version = '1.2.0'
 
 repositories {
     mavenCentral()
@@ -55,4 +55,8 @@ checkstyle {
 dependencyCheck {
     failBuildOnCVSS = 7.0
     formats = ['HTML', 'JSON']
+    skipConfigurations = ['checkstyle']
+    data {
+        directory = "${project.rootDir}/dc/dependency-check/data"
+    }
 }

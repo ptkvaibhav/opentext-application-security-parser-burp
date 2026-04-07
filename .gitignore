@@ -12,3 +12,4 @@ config/checkstyle/google_checks.xml
 gradle-8.7/
 gradle-8.7-bin.zip
 InspectPluginApi.java
+dc/
