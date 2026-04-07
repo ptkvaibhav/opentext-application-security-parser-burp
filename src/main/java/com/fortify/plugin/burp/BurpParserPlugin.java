@@ -28,22 +28,26 @@ public class BurpParserPlugin implements ParserPlugin<BurpVulnerabilityAttribute
 
     @Override
     public void parseScan(ScanData scanData, ScanBuilder scanBuilder) throws ScanParsingException, IOException {
-        try (InputStream is = scanData.getInputStream(name -> name.endsWith(".xml"))) {
-            if (is != null) {
-                BurpItems burpItems = xmlMapper.readValue(is, BurpItems.class);
-                scanBuilder.setEngineVersion(burpItems.getBurpVersion());
-                scanBuilder.setScanDate(new Date());
+        try (InputStream is = scanData.getInputStream(name -> name.toLowerCase().endsWith(".xml"))) {
+            if (is == null) {
+                throw new ScanParsingException("No Burp XML file found in the uploaded artifact.");
             }
+            BurpItems burpItems = xmlMapper.readValue(is, BurpItems.class);
+            if (burpItems == null) {
+                 throw new ScanParsingException("Failed to parse Burp XML file.");
+            }
+            scanBuilder.setEngineVersion(burpItems.getBurpVersion());
+            scanBuilder.setScanDate(new Date());
         }
     }
 
     @Override
     public void parseVulnerabilities(ScanData scanData, VulnerabilityHandler vulnerabilityHandler)
             throws ScanParsingException, IOException {
-        try (InputStream is = scanData.getInputStream(name -> name.endsWith(".xml"))) {
+        try (InputStream is = scanData.getInputStream(name -> name.toLowerCase().endsWith(".xml"))) {
             if (is != null) {
                 BurpItems burpItems = xmlMapper.readValue(is, BurpItems.class);
-                if (burpItems.getItems() != null) {
+                if (burpItems != null && burpItems.getItems() != null) {
                     for (BurpItem item : burpItems.getItems()) {
                         reportIssue(vulnerabilityHandler, item);
                     }

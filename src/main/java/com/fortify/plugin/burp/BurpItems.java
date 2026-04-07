@@ -1,13 +1,12 @@
 package com.fortify.plugin.burp;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import java.util.List;
 
-@JacksonXmlRootElement(localName = "items")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BurpItems {
     @JacksonXmlProperty(isAttribute = true)
@@ -18,6 +17,7 @@ public class BurpItems {
 
     @JacksonXmlElementWrapper(useWrapping = false)
     @JacksonXmlProperty(localName = "item")
+    @JsonAlias("issue")
     private List<BurpItem> items;
 
     public String getBurpVersion() {
