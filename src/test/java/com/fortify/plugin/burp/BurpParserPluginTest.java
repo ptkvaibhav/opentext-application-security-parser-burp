@@ -63,6 +63,7 @@ public class BurpParserPluginTest {
 
         verify(scanBuilder, times(1)).setEngineVersion(eq("2023.10.1"));
         verify(scanBuilder, times(1)).setScanDate(any());
+        verify(scanBuilder, times(1)).completeScan();
     }
 
     @Test

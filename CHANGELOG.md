@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.1] - 2026-04-06
+### Fixed
+- Fixed critical `ScanParsingException` leading to "No valid analysis result was found" in Fortify SSC. The plugin now properly invokes `scanBuilder.completeScan()` to trigger Fortify's internal processing logic.
+
 ## [1.2.0] - 2026-04-06
 ### Fixed
 - Fixed `plugin.xml` parsing error in Fortify SSC by conforming strictly to the `pluginmanifest-1.0.xsd` schema and correct XML namespaces.
