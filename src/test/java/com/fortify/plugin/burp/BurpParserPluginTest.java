@@ -49,6 +49,7 @@ public class BurpParserPluginTest {
 
         verify(staticVulnerabilityBuilder, times(1)).setCategory(eq("Cross-site scripting (reflected)"));
         verify(staticVulnerabilityBuilder, times(1)).setPriority(eq(BasicVulnerabilityBuilder.Priority.High));
+        verify(staticVulnerabilityBuilder, times(1)).setFileName(eq("http://localhost/vulnerable.php"));
         verify(staticVulnerabilityBuilder, times(1)).completeVulnerability();
     }
 
@@ -62,5 +63,43 @@ public class BurpParserPluginTest {
 
         verify(scanBuilder, times(1)).setEngineVersion(eq("2023.10.1"));
         verify(scanBuilder, times(1)).setScanDate(any());
+    }
+
+    @Test
+    public void testParseVulnerabilitiesWithIssuesTag() throws Exception {
+        InputStream is = getClass().getResourceAsStream("/sample-burp-report.xml");
+        when(scanData.getInputStream(any(Predicate.class))).thenReturn(is);
+        when(vulnerabilityHandler.startStaticVulnerability(anyString())).thenReturn(staticVulnerabilityBuilder);
+        when(staticVulnerabilityBuilder.setCategory(anyString())).thenReturn(staticVulnerabilityBuilder);
+        when(staticVulnerabilityBuilder.setFileName(anyString())).thenReturn(staticVulnerabilityBuilder);
+        when(staticVulnerabilityBuilder.setPriority(any(BasicVulnerabilityBuilder.Priority.class))).thenReturn(staticVulnerabilityBuilder);
+
+        BurpParserPlugin plugin = new BurpParserPlugin();
+        plugin.parseVulnerabilities(scanData, vulnerabilityHandler);
+
+        verify(staticVulnerabilityBuilder, times(1)).setCategory(eq("Cross-site scripting (reflected)"));
+        verify(staticVulnerabilityBuilder, times(1)).completeVulnerability();
+    }
+
+    @Test
+    public void testParseVulnerabilitiesWithUppercaseExtension() throws Exception {
+        // Mock getInputStream to match .XML
+        when(scanData.getInputStream(any(Predicate.class))).thenAnswer(invocation -> {
+            Predicate<String> predicate = (Predicate<String>) invocation.getArgument(0);
+            if (predicate.test("results.XML")) {
+                return getClass().getResourceAsStream("/sample-burp.xml");
+            }
+            return null;
+        });
+        when(vulnerabilityHandler.startStaticVulnerability(anyString())).thenReturn(staticVulnerabilityBuilder);
+        when(staticVulnerabilityBuilder.setCategory(anyString())).thenReturn(staticVulnerabilityBuilder);
+        when(staticVulnerabilityBuilder.setFileName(anyString())).thenReturn(staticVulnerabilityBuilder);
+        when(staticVulnerabilityBuilder.setPriority(any(BasicVulnerabilityBuilder.Priority.class))).thenReturn(staticVulnerabilityBuilder);
+
+        BurpParserPlugin plugin = new BurpParserPlugin();
+        plugin.parseVulnerabilities(scanData, vulnerabilityHandler);
+
+        verify(staticVulnerabilityBuilder, times(1)).setCategory(eq("Cross-site scripting (reflected)"));
+        verify(staticVulnerabilityBuilder, times(1)).completeVulnerability();
     }
 }

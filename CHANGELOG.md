@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 ## [1.1.0] - 2026-04-06
 ### Fixed
 - Fixed `plugin.xml` parsing error in Fortify SSC by conforming strictly to the `pluginmanifest-1.0.xsd` schema and correct XML namespaces.
+- Fixed an issue where `.XML` files with uppercase extensions were rejected by using case-insensitive extension matching.
+- Added robust error reporting when no valid XML file is found instead of failing silently.
+
+### Added
+- Added support for parsing Burp Reports `<issues>/<issue>` structure, in addition to the standard `<items>/<item>` structure.
+- Added official Fortify SSC icons and logos for the plugin UI.
+- Relocated the ViewTemplate configuration to align with Fortify reference project conventions.
 
 ## [1.0.0] - 2026-04-06
 ### Added

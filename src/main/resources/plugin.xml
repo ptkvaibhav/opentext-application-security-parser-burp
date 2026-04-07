@@ -8,10 +8,16 @@
         <data-version>1</data-version>
         <vendor name="OpenText" url="https://www.microfocus.com/en-us/cyberres/application-security"/>
         <description>Parser for Burp Suite vulnerability scanner results.</description>
+        <resources>
+            <images>
+                <image imageType="icon" location="/images/icon.png"/>
+                <image imageType="logo" location="/images/logo.png"/>
+            </images>
+        </resources>
     </plugin-info>
     <issue-parser xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         <engine-type>BURP</engine-type>
-        <view-template location="/burp-view.json">
+        <view-template location="/viewtemplate/ViewTemplate.json">
             <description>Default vulnerability view template for Burp Suite.</description>
         </view-template>
     </issue-parser>
