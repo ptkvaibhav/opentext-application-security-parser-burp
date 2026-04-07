@@ -41,14 +41,14 @@ cd opentext-application-security-parser-burp
 ```
 
 The resulting deployment artifact will be located at:
-`build/libs/fortify-ssc-parser-burp-1.2.0.jar`
+`build/libs/fortify-ssc-parser-burp-1.2.1.jar`
 
 ## ⚙️ Installation & Usage
 
 ### 1. Install into Fortify SSC
 1. Log in to your Fortify SSC instance with Administrator privileges.
 2. Navigate to **Administration > Plugins > Parsers**.
-3. Click **Add** and upload the `fortify-ssc-parser-burp-1.2.0.jar` file.
+3. Click **Add** and upload the `fortify-ssc-parser-burp-1.2.1.jar` file.
 4. **Important:** After uploading, locate the "Burp Suite Parser Plugin" in the list and click **Enable**.
 
 ### 2. Uploading Scan Results

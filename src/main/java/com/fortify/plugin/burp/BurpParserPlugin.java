@@ -38,6 +38,7 @@ public class BurpParserPlugin implements ParserPlugin<BurpVulnerabilityAttribute
             }
             scanBuilder.setEngineVersion(burpItems.getBurpVersion());
             scanBuilder.setScanDate(new Date());
+            scanBuilder.completeScan();
         }
     }
 
