@@ -2,6 +2,10 @@ package com.fortify.plugin.burp;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * Represents a single vulnerability issue extracted from a Burp Suite XML report.
+ * Contains fields mapping to standard Burp issue properties.
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BurpItem {
     private String serialNumber;

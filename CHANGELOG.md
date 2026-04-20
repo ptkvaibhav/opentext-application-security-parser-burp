@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.0] - 2026-04-20
+### Added
+- Enterprise-grade readiness: added comprehensive JavaDoc documentation across the codebase.
+- Improved `README.md` with professional headers, badges, and detailed integration instructions.
+- Addressed all outstanding Dependabot alerts by updating `junit-jupiter` to v5.11.4 and verifying component security.
+- Updated GitHub Actions CI and CodeQL workflows to use the latest supported versions (`v4` and `v3` respectively) fixing previously failing CI runs.
+### Removed
+- Cleaned up the repository by removing the redundant and untracked `temp-sample-parser` directory.
+
 ## [1.2.6] - 2026-04-20
 ### Fixed
 - Fixed the persistent "Loading issue details" hang in Fortify SSC by completely refactoring `ViewTemplate.json` to follow the standard array-of-arrays format and correctly using the `customAttributes.` prefix.
