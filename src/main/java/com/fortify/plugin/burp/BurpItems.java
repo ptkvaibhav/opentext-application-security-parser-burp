@@ -8,6 +8,10 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import java.util.List;
 
+/**
+ * Represents the root element of a Burp Suite XML export.
+ * Handles both '&lt;items&gt;' and '&lt;issues&gt;' root tags using Jackson annotations.
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JacksonXmlRootElement(localName = "issues")
 public class BurpItems {

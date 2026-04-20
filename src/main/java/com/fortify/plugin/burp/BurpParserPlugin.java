@@ -20,6 +20,11 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Parses Burp Suite XML reports and ingests vulnerabilities into Fortify SSC.
+ * Implements the {@link ParserPlugin} interface to handle the parsing lifecycle.
+ * Maps Burp severity, confidence, and custom fields to Fortify's standard model.
+ */
 public class BurpParserPlugin implements ParserPlugin<BurpVulnerabilityAttribute> {
     private static final Logger LOG = LoggerFactory.getLogger(BurpParserPlugin.class);
     private final XmlMapper xmlMapper = new XmlMapper();
@@ -180,7 +185,9 @@ public class BurpParserPlugin implements ParserPlugin<BurpVulnerabilityAttribute
     }
 
     private float mapConfidence(String confidence) {
-        if (confidence == null) return 1.0f;
+        if (confidence == null) {
+            return 1.0f;
+        }
         switch (confidence.toLowerCase()) {
             case "certain": return 5.0f;
             case "firm": return 3.0f;
@@ -190,7 +197,9 @@ public class BurpParserPlugin implements ParserPlugin<BurpVulnerabilityAttribute
     }
 
     private float mapImpact(String severity) {
-        if (severity == null) return 1.0f;
+        if (severity == null) {
+            return 1.0f;
+        }
         switch (severity.toLowerCase()) {
             case "critical": return 5.0f;
             case "high": return 4.0f;
