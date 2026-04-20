@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'com.fortify.plugin'
-version = '1.2.2'
+version = '1.2.3'
 
 repositories {
     mavenCentral()
@@ -16,10 +16,11 @@ repositories {
 dependencies {
     compileOnly 'com.fortify.plugin:plugin-api:1.2.2320.0'
     testImplementation 'com.fortify.plugin:plugin-api:1.2.2320.0'
-    
+
+    implementation 'org.slf4j:slf4j-api:2.0.16'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.18.2'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
-    
+
     testImplementation 'org.junit.jupiter:junit-jupiter:6.0.3'
     testImplementation 'org.mockito:mockito-core:5.23.0'
     testImplementation 'org.mockito:mockito-junit-jupiter:5.23.0'
@@ -34,6 +35,7 @@ java {
 
 shadowJar {
     archiveClassifier.set('')
+    relocate 'com.fasterxml.jackson', 'com.fortify.plugin.burp.shadow.jackson'
 }
 
 tasks.named('test') {

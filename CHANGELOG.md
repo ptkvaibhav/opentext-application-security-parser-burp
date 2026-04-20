@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.3] - 2026-04-20
+### Fixed
+- Fixed classloader conflicts in Fortify SSC by relocating Jackson dependencies to `com.fortify.plugin.burp.shadow.jackson`.
+- Improved XML parsing robustness to handle both `<issues>` and `<items>` root elements more reliably using Jackson annotations.
+- Added deterministic ID generation safety checks to prevent potential `NullPointerExceptions` during scan ingestion.
+
+### Added
+- Added SLF4J logging throughout the parsing process to provide better diagnostics in the Fortify SSC plugin logs.
+- Added more comprehensive unit tests for XML unmarshalling and edge cases in host attribute parsing.
+
 ## [1.2.2] - 2026-04-07
 ### Fixed
 - Fixed `FMDALException` in Fortify SSC caused by unique ID length and format by switching from Base64-encoded SHA-256 to a 32-character MD5 hex string.
