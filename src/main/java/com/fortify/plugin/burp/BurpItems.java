@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JacksonXmlRootElement(localName = "issues")
 public class BurpItems {
     @JacksonXmlProperty(isAttribute = true)
     private String burpVersion;
@@ -16,8 +18,8 @@ public class BurpItems {
     private String exportTime;
 
     @JacksonXmlElementWrapper(useWrapping = false)
-    @JacksonXmlProperty(localName = "item")
-    @JsonAlias("issue")
+    @JacksonXmlProperty(localName = "issue")
+    @JsonAlias({"item", "issue"})
     private List<BurpItem> items;
 
     public String getBurpVersion() {
