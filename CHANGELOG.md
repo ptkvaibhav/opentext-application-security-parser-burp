@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.5] - 2026-04-20
+### Fixed
+- Fixed "Loading issue details" hang in Fortify SSC by ensuring all custom attributes are non-null (returning empty strings instead of null).
+- Improved view template compatibility by simplifying the issue details layout to use the `SIMPLE` template ID.
+- Corrected a syntax error in the internal `mapImpact` logic.
+
+## [1.2.4] - 2026-04-20
+### Fixed
+- Fixed `FMDALException` during scan ingestion by adding robust truncation for all string fields and custom attributes.
+- Fixed potential SQL execution failures by implementing duplicate issue ID prevention within a single scan session.
+- Fixed missing vulnerability metadata by mapping additional standard fields: `vulnerabilityAbstract`, `confidence`, and `impact`.
+
 ## [1.2.3] - 2026-04-20
 ### Fixed
 - Fixed classloader conflicts in Fortify SSC by relocating Jackson dependencies to `com.fortify.plugin.burp.shadow.jackson`.
