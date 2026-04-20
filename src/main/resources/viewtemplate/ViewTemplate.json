@@ -24,7 +24,7 @@
     },
     {
       "type": "template",
-      "templateId": "COLLAPSE",
+      "templateId": "SIMPLE",
       "title": "Technical Details",
       "fields": [
         {

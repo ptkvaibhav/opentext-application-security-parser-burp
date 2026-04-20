@@ -54,7 +54,7 @@ public class BurpParserPlugin implements ParserPlugin<BurpVulnerabilityAttribute
             }
             String version = burpItems.getBurpVersion();
             LOG.info("Detected Burp version: {}", version);
-            scanBuilder.setEngineVersion(truncate(version != null ? version : "Unknown", 255));
+            scanBuilder.setEngineVersion(safeTruncate(version != null ? version : "Unknown", 255));
             scanBuilder.setScanDate(new Date());
             scanBuilder.completeScan();
         } catch (Exception e) {
@@ -97,7 +97,7 @@ public class BurpParserPlugin implements ParserPlugin<BurpVulnerabilityAttribute
         StaticVulnerabilityBuilder builder = vulnerabilityHandler.startStaticVulnerability(uniqueId);
         
         String name = item.getName() != null ? item.getName() : "Unknown";
-        builder.setCategory(truncate(name, 255));
+        builder.setCategory(safeTruncate(name, 255));
         
         String host = item.getHost() != null ? item.getHost() : "";
         String path = item.getPath() != null ? item.getPath() : "";
@@ -105,25 +105,25 @@ public class BurpParserPlugin implements ParserPlugin<BurpVulnerabilityAttribute
         if (fileName.isEmpty()) {
             fileName = "Unknown";
         }
-        builder.setFileName(truncate(fileName, 255));
+        builder.setFileName(safeTruncate(fileName, 255));
         
         builder.setPriority(mapPriority(item.getSeverity()));
         builder.setConfidence(mapConfidence(item.getConfidence()));
         builder.setImpact(mapImpact(item.getSeverity()));
         
         String detail = item.getIssueDetail() != null ? item.getIssueDetail() : name;
-        builder.setVulnerabilityAbstract(truncate(detail, 1024));
+        builder.setVulnerabilityAbstract(safeTruncate(detail, 1024));
         
-        // Custom attributes
-        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.ISSUE_NAME, truncate(item.getName(), 255));
-        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.SEVERITY, truncate(item.getSeverity(), 255));
-        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.CONFIDENCE, truncate(item.getConfidence(), 255));
-        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.FULL_FILE_NAME, truncate(host + path, 255));
-        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.ISSUE_DETAIL, truncate(item.getIssueDetail(), 32000));
-        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.ISSUE_BACKGROUND, truncate(item.getIssueBackground(), 32000));
-        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.REMEDIATION_DETAIL, truncate(item.getRemediationDetail(), 32000));
+        // Custom attributes - Ensure non-null to avoid SSC rendering issues
+        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.ISSUE_NAME, safeTruncate(item.getName(), 255));
+        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.SEVERITY, safeTruncate(item.getSeverity(), 255));
+        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.CONFIDENCE, safeTruncate(item.getConfidence(), 255));
+        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.FULL_FILE_NAME, safeTruncate(host + path, 255));
+        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.ISSUE_DETAIL, safeTruncate(item.getIssueDetail(), 32000));
+        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.ISSUE_BACKGROUND, safeTruncate(item.getIssueBackground(), 32000));
+        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.REMEDIATION_DETAIL, safeTruncate(item.getRemediationDetail(), 32000));
         builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.REMEDIATION_BACKGROUND,
-                truncate(item.getRemediationBackground(), 32000));
+                safeTruncate(item.getRemediationBackground(), 32000));
         
         builder.completeVulnerability();
     }
@@ -154,9 +154,9 @@ public class BurpParserPlugin implements ParserPlugin<BurpVulnerabilityAttribute
         }
     }
 
-    private String truncate(String value, int length) {
+    private String safeTruncate(String value, int length) {
         if (value == null) {
-            return null;
+            return "";
         }
         return value.length() > length ? value.substring(0, length) : value;
     }
