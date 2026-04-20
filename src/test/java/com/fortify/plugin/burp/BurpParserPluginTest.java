@@ -16,8 +16,8 @@ import java.util.function.Predicate;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyFloat;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -89,21 +89,27 @@ public class BurpParserPluginTest {
     }
 
     @Test
-    public void testParseVulnerabilitiesWithUppercaseExtension() throws Exception {
-        // Mock getInputStream to match .XML
-        when(scanData.getInputStream(any(Predicate.class))).thenAnswer(invocation -> {
-            Predicate<String> predicate = (Predicate<String>) invocation.getArgument(0);
-            if (predicate.test("results.XML")) {
-                return getClass().getResourceAsStream("/sample-burp.xml");
-            }
-            return null;
-        });
+    public void testParseSnippetWithCDataAndAttributes() throws Exception {
+        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+                "<issues burpVersion=\"2025.12.4\">" +
+                "  <issue>" +
+                "    <serialNumber>2582756949112998912</serialNumber>" +
+                "    <name><![CDATA[Strict transport security not enforced]]></name>" +
+                "    <host ip=\"10.150.39.155\">https://mes-edi-portal-tradingpartner-management-int.apps.psponcltr01.int.praws.hicloud</host>" +
+                "    <path><![CDATA[/EDI_Portal/admin/search]]></path>" +
+                "    <severity>Low</severity>" +
+                "    <confidence>Certain</confidence>" +
+                "  </issue>" +
+                "</issues>";
+        
+        when(scanData.getInputStream(any(Predicate.class))).thenReturn(new java.io.ByteArrayInputStream(xml.getBytes()));
         setupMocks();
 
         BurpParserPlugin plugin = new BurpParserPlugin();
         plugin.parseVulnerabilities(scanData, vulnerabilityHandler);
 
-        verify(staticVulnerabilityBuilder, times(1)).setCategory(eq("Cross-site scripting (reflected)"));
+        verify(staticVulnerabilityBuilder, times(1)).setCategory(eq("Strict transport security not enforced"));
+        verify(staticVulnerabilityBuilder, times(1)).setFileName(contains("https://mes-edi-portal"));
         verify(staticVulnerabilityBuilder, times(1)).completeVulnerability();
     }
 }
