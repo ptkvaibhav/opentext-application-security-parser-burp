@@ -1,53 +1,83 @@
-{
-  "type": "template",
-  "templateId": "TITLEBOX",
-  "title": "Burp Suite Issue Details",
-  "sub-templates": [
+[
+  [
     {
       "type": "template",
-      "templateId": "SIMPLE",
       "title": "Issue Summary",
-      "fields": [
-        {
-          "name": "issueName",
-          "label": "Issue Name"
-        },
-        {
-          "name": "severity",
-          "label": "Severity"
-        },
-        {
-          "name": "confidence",
-          "label": "Confidence"
-        }
-      ]
+      "key": "brief",
+      "templateId": "COLLAPSE",
+      "dataType": "string"
     },
     {
       "type": "template",
-      "templateId": "SIMPLE",
+      "title": "Burp Suite Details",
+      "templateId": "TITLEBOX",
+      "items": [
+        {
+          "type": "template",
+          "title": "Issue Name",
+          "key": "customAttributes.issueName",
+          "templateId": "SIMPLE",
+          "dataType": "string"
+        },
+        {
+          "type": "template",
+          "title": "Severity",
+          "key": "customAttributes.severity",
+          "templateId": "SIMPLE",
+          "dataType": "string"
+        },
+        {
+          "type": "template",
+          "title": "Confidence",
+          "key": "customAttributes.confidence",
+          "templateId": "SIMPLE",
+          "dataType": "string"
+        },
+        {
+          "type": "template",
+          "title": "URL / Path",
+          "key": "customAttributes.fullFileName",
+          "templateId": "SIMPLE",
+          "dataType": "string"
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "type": "template",
       "title": "Technical Details",
-      "fields": [
+      "templateId": "TITLEBOX",
+      "items": [
         {
-          "name": "fullFileName",
-          "label": "URL / Path"
+          "type": "template",
+          "title": "Issue Detail",
+          "key": "customAttributes.issueDetail",
+          "templateId": "COLLAPSE",
+          "dataType": "string"
         },
         {
-          "name": "issueDetail",
-          "label": "Issue Detail"
+          "type": "template",
+          "title": "Issue Background",
+          "key": "customAttributes.issueBackground",
+          "templateId": "COLLAPSE",
+          "dataType": "string"
         },
         {
-          "name": "issueBackground",
-          "label": "Issue Background"
+          "type": "template",
+          "title": "Remediation Detail",
+          "key": "customAttributes.remediationDetail",
+          "templateId": "COLLAPSE",
+          "dataType": "string"
         },
         {
-          "name": "remediationDetail",
-          "label": "Remediation Detail"
-        },
-        {
-          "name": "remediationBackground",
-          "label": "Remediation Background"
+          "type": "template",
+          "title": "Remediation Background",
+          "key": "customAttributes.remediationBackground",
+          "templateId": "COLLAPSE",
+          "dataType": "string"
         }
       ]
     }
   ]
-}
+]

@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.6] - 2026-04-20
+### Fixed
+- Fixed the persistent "Loading issue details" hang in Fortify SSC by completely refactoring `ViewTemplate.json` to follow the standard array-of-arrays format and correctly using the `customAttributes.` prefix.
+- Aligned custom attribute mapping keys with the internal SSC model to ensure UI data binding succeeds.
+
 ## [1.2.5] - 2026-04-20
 ### Fixed
 - Fixed "Loading issue details" hang in Fortify SSC by ensuring all custom attributes are non-null (returning empty strings instead of null).
