@@ -17,6 +17,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 public class BurpParserPlugin implements ParserPlugin<BurpVulnerabilityAttribute> {
     private static final Logger LOG = LoggerFactory.getLogger(BurpParserPlugin.class);
@@ -52,7 +54,7 @@ public class BurpParserPlugin implements ParserPlugin<BurpVulnerabilityAttribute
             }
             String version = burpItems.getBurpVersion();
             LOG.info("Detected Burp version: {}", version);
-            scanBuilder.setEngineVersion(version != null ? version : "Unknown");
+            scanBuilder.setEngineVersion(truncate(version != null ? version : "Unknown", 255));
             scanBuilder.setScanDate(new Date());
             scanBuilder.completeScan();
         } catch (Exception e) {
@@ -70,8 +72,14 @@ public class BurpParserPlugin implements ParserPlugin<BurpVulnerabilityAttribute
                 BurpItems burpItems = xmlMapper.readValue(is, BurpItems.class);
                 if (burpItems != null && burpItems.getItems() != null) {
                     LOG.info("Found {} issues in Burp XML", burpItems.getItems().size());
+                    Set<String> reportedIds = new HashSet<>();
                     for (BurpItem item : burpItems.getItems()) {
-                        reportIssue(vulnerabilityHandler, item);
+                        String uniqueId = generateUniqueId(item);
+                        if (reportedIds.add(uniqueId)) {
+                            reportIssue(vulnerabilityHandler, item, uniqueId);
+                        } else {
+                            LOG.debug("Skipping duplicate issue ID in same scan: {}", uniqueId);
+                        }
                     }
                 } else {
                     LOG.warn("No issues found in Burp XML or failed to parse items");
@@ -85,32 +93,37 @@ public class BurpParserPlugin implements ParserPlugin<BurpVulnerabilityAttribute
         }
     }
 
-    private void reportIssue(VulnerabilityHandler vulnerabilityHandler, BurpItem item) {
-        String uniqueId = generateUniqueId(item);
+    private void reportIssue(VulnerabilityHandler vulnerabilityHandler, BurpItem item, String uniqueId) {
         StaticVulnerabilityBuilder builder = vulnerabilityHandler.startStaticVulnerability(uniqueId);
         
-        builder.setCategory(item.getName() != null ? item.getName() : "Unknown");
+        String name = item.getName() != null ? item.getName() : "Unknown";
+        builder.setCategory(truncate(name, 255));
+        
         String host = item.getHost() != null ? item.getHost() : "";
         String path = item.getPath() != null ? item.getPath() : "";
         String fileName = host + path;
         if (fileName.isEmpty()) {
             fileName = "Unknown";
-        } else if (fileName.length() > 255) {
-            fileName = fileName.substring(0, 255);
         }
-        builder.setFileName(fileName);
+        builder.setFileName(truncate(fileName, 255));
+        
         builder.setPriority(mapPriority(item.getSeverity()));
+        builder.setConfidence(mapConfidence(item.getConfidence()));
+        builder.setImpact(mapImpact(item.getSeverity()));
+        
+        String detail = item.getIssueDetail() != null ? item.getIssueDetail() : name;
+        builder.setVulnerabilityAbstract(truncate(detail, 1024));
         
         // Custom attributes
-        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.ISSUE_NAME, item.getName());
-        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.SEVERITY, item.getSeverity());
-        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.CONFIDENCE, item.getConfidence());
-        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.FULL_FILE_NAME, host + path);
-        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.ISSUE_DETAIL, item.getIssueDetail());
-        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.ISSUE_BACKGROUND, item.getIssueBackground());
-        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.REMEDIATION_DETAIL, item.getRemediationDetail());
+        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.ISSUE_NAME, truncate(item.getName(), 255));
+        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.SEVERITY, truncate(item.getSeverity(), 255));
+        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.CONFIDENCE, truncate(item.getConfidence(), 255));
+        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.FULL_FILE_NAME, truncate(host + path, 255));
+        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.ISSUE_DETAIL, truncate(item.getIssueDetail(), 32000));
+        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.ISSUE_BACKGROUND, truncate(item.getIssueBackground(), 32000));
+        builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.REMEDIATION_DETAIL, truncate(item.getRemediationDetail(), 32000));
         builder.setStringCustomAttributeValue(BurpVulnerabilityAttribute.REMEDIATION_BACKGROUND,
-                item.getRemediationBackground());
+                truncate(item.getRemediationBackground(), 32000));
         
         builder.completeVulnerability();
     }
@@ -141,11 +154,20 @@ public class BurpParserPlugin implements ParserPlugin<BurpVulnerabilityAttribute
         }
     }
 
+    private String truncate(String value, int length) {
+        if (value == null) {
+            return null;
+        }
+        return value.length() > length ? value.substring(0, length) : value;
+    }
+
     private BasicVulnerabilityBuilder.Priority mapPriority(String severity) {
         if (severity == null) {
             return BasicVulnerabilityBuilder.Priority.Low;
         }
         switch (severity.toLowerCase()) {
+            case "critical":
+                return BasicVulnerabilityBuilder.Priority.Critical;
             case "high":
                 return BasicVulnerabilityBuilder.Priority.High;
             case "medium":
@@ -154,6 +176,28 @@ public class BurpParserPlugin implements ParserPlugin<BurpVulnerabilityAttribute
             case "information":
             default:
                 return BasicVulnerabilityBuilder.Priority.Low;
+        }
+    }
+
+    private float mapConfidence(String confidence) {
+        if (confidence == null) return 1.0f;
+        switch (confidence.toLowerCase()) {
+            case "certain": return 5.0f;
+            case "firm": return 3.0f;
+            case "tentative": return 1.0f;
+            default: return 1.0f;
+        }
+    }
+
+    private float mapImpact(String severity) {
+        if (severity == null) return 1.0f;
+        switch (severity.toLowerCase()) {
+            case "critical": return 5.0f;
+            case "high": return 4.0f;
+            case "medium": return 3.0f;
+            case "low": return 2.0f;
+            case "information": return 1.0f;
+            default: return 1.0f;
         }
     }
 }

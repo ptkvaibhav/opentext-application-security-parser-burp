@@ -14,8 +14,10 @@ import java.io.InputStream;
 import java.util.function.Predicate;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyFloat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -35,14 +37,21 @@ public class BurpParserPluginTest {
     @Mock
     private ScanBuilder scanBuilder;
 
-    @Test
-    public void testParseVulnerabilities() throws Exception {
-        InputStream is = getClass().getResourceAsStream("/sample-burp.xml");
-        when(scanData.getInputStream(any(Predicate.class))).thenReturn(is);
+    private void setupMocks() {
         when(vulnerabilityHandler.startStaticVulnerability(anyString())).thenReturn(staticVulnerabilityBuilder);
         when(staticVulnerabilityBuilder.setCategory(anyString())).thenReturn(staticVulnerabilityBuilder);
         when(staticVulnerabilityBuilder.setFileName(anyString())).thenReturn(staticVulnerabilityBuilder);
         when(staticVulnerabilityBuilder.setPriority(any(BasicVulnerabilityBuilder.Priority.class))).thenReturn(staticVulnerabilityBuilder);
+        when(staticVulnerabilityBuilder.setConfidence(anyFloat())).thenReturn(staticVulnerabilityBuilder);
+        when(staticVulnerabilityBuilder.setImpact(anyFloat())).thenReturn(staticVulnerabilityBuilder);
+        when(staticVulnerabilityBuilder.setVulnerabilityAbstract(anyString())).thenReturn(staticVulnerabilityBuilder);
+    }
+
+    @Test
+    public void testParseVulnerabilities() throws Exception {
+        InputStream is = getClass().getResourceAsStream("/sample-burp.xml");
+        when(scanData.getInputStream(any(Predicate.class))).thenReturn(is);
+        setupMocks();
 
         BurpParserPlugin plugin = new BurpParserPlugin();
         plugin.parseVulnerabilities(scanData, vulnerabilityHandler);
@@ -70,10 +79,7 @@ public class BurpParserPluginTest {
     public void testParseVulnerabilitiesWithIssuesTag() throws Exception {
         InputStream is = getClass().getResourceAsStream("/sample-burp-report.xml");
         when(scanData.getInputStream(any(Predicate.class))).thenReturn(is);
-        when(vulnerabilityHandler.startStaticVulnerability(anyString())).thenReturn(staticVulnerabilityBuilder);
-        when(staticVulnerabilityBuilder.setCategory(anyString())).thenReturn(staticVulnerabilityBuilder);
-        when(staticVulnerabilityBuilder.setFileName(anyString())).thenReturn(staticVulnerabilityBuilder);
-        when(staticVulnerabilityBuilder.setPriority(any(BasicVulnerabilityBuilder.Priority.class))).thenReturn(staticVulnerabilityBuilder);
+        setupMocks();
 
         BurpParserPlugin plugin = new BurpParserPlugin();
         plugin.parseVulnerabilities(scanData, vulnerabilityHandler);
@@ -92,10 +98,7 @@ public class BurpParserPluginTest {
             }
             return null;
         });
-        when(vulnerabilityHandler.startStaticVulnerability(anyString())).thenReturn(staticVulnerabilityBuilder);
-        when(staticVulnerabilityBuilder.setCategory(anyString())).thenReturn(staticVulnerabilityBuilder);
-        when(staticVulnerabilityBuilder.setFileName(anyString())).thenReturn(staticVulnerabilityBuilder);
-        when(staticVulnerabilityBuilder.setPriority(any(BasicVulnerabilityBuilder.Priority.class))).thenReturn(staticVulnerabilityBuilder);
+        setupMocks();
 
         BurpParserPlugin plugin = new BurpParserPlugin();
         plugin.parseVulnerabilities(scanData, vulnerabilityHandler);
