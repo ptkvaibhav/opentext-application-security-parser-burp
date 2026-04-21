@@ -40,5 +40,5 @@ jobs:
     - name: Upload Plugin Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: fortify-ssc-parser-burp
-        path: build/libs/*-parser-burp-*.jar
+        name: burp-fortify-ssc-parser-plugin
+        path: build/libs/burp-fortify-ssc-parser-plugin-*.jar

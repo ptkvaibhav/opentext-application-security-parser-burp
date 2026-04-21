@@ -4,8 +4,8 @@
   <p>An enterprise-grade custom parser plugin for Fortify Software Security Center (OpenText Application Security). Enables seamless ingestion, parsing, and visualization of PortSwigger Burp Suite XML scan results directly within the Fortify SSC dashboard.</p>
 
   <p>
-    <a href="https://github.com/ptkvaibhav/opentext-application-security-parser-burp/actions/workflows/ci.yml"><img src="https://github.com/ptkvaibhav/opentext-application-security-parser-burp/actions/workflows/ci.yml/badge.svg" alt="Build Status" /></a>
-    <a href="https://github.com/ptkvaibhav/opentext-application-security-parser-burp/actions/workflows/codeql.yml"><img src="https://github.com/ptkvaibhav/opentext-application-security-parser-burp/actions/workflows/codeql.yml/badge.svg" alt="CodeQL" /></a>
+    <a href="https://github.com/ptkvaibhav/burp-fortify-ssc-parser-plugin/actions/workflows/ci.yml"><img src="https://github.com/ptkvaibhav/burp-fortify-ssc-parser-plugin/actions/workflows/ci.yml/badge.svg" alt="Build Status" /></a>
+    <a href="https://github.com/ptkvaibhav/burp-fortify-ssc-parser-plugin/actions/workflows/codeql.yml"><img src="https://github.com/ptkvaibhav/burp-fortify-ssc-parser-plugin/actions/workflows/codeql.yml/badge.svg" alt="CodeQL" /></a>
     <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License" />
     <img src="https://img.shields.io/badge/Java-17-orange" alt="Java" />
     <img src="https://img.shields.io/badge/Fortify_SSC-19.x+-brightgreen" alt="Fortify" />
@@ -43,15 +43,15 @@ The project uses the Gradle Shadow plugin to create a "Fat JAR" required by Fort
 
 ```bash
 # Clone the repository
-git clone https://github.com/ptkvaibhav/opentext-application-security-parser-burp.git
-cd opentext-application-security-parser-burp
+git clone https://github.com/ptkvaibhav/burp-fortify-ssc-parser-plugin.git
+cd burp-fortify-ssc-parser-plugin
 
 # Build the Fat JAR
 ./gradlew clean build shadowJar
 ```
 
 The resulting deployment artifact will be located at:
-`build/libs/opentext-application-security-parser-burp-2.0.0.jar`
+`build/libs/burp-fortify-ssc-parser-plugin-2.0.0.jar`
 
 ---
 
@@ -60,7 +60,7 @@ The resulting deployment artifact will be located at:
 ### 1. Install into Fortify SSC
 1. Log in to your Fortify SSC instance with Administrator privileges.
 2. Navigate to **Administration > Plugins > Parsers**.
-3. Click **Add** and upload the `opentext-application-security-parser-burp-2.0.0.jar` file.
+3. Click **Add** and upload the `burp-fortify-ssc-parser-plugin-2.0.0.jar` file.
 4. **Important:** After uploading, locate the "Burp Suite Parser Plugin" in the list and click **Enable**.
 
 ### 2. Uploading Scan Results
