@@ -29,7 +29,7 @@ This plugin bridges the gap between PortSwigger's **Burp Suite** and OpenText's 
 - **Java:** JDK 17+ (for building from source).
 
 ### Downloading the Plugin
-Download the latest `fortify-ssc-parser-burp-X.X.X.jar` from the [GitHub Releases](../../releases) page.
+Download the latest `burp-fortify-ssc-parser-plugin-X.X.X.jar` from the [GitHub Releases](../../releases) page.
 
 ### Installing into Fortify SSC
 1. Log in to Fortify SSC as an Administrator.
